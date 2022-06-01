@@ -7,7 +7,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import com.sun.tools.javac.comp.Todo;
 import edu.polytech.estore.dao.CommentDao;
 import edu.polytech.estore.dao.ExchangeRateDAO;
 import edu.polytech.estore.dao.ProductDao;
@@ -69,6 +68,7 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
     }
 
     /**
+     * Get the list of products, with different sorting/filtering options.
      * @param category the category the user wants to filter by, can be null to not filter
      * @param currency the currency the user wants the prices to convert to, can be null to not convert
      * @param sort the order of sorting chosen by user, can be null to not order
@@ -86,12 +86,22 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
         else{
             list = getProducts();
         }
+
+        //currency conversion
         if(currency != null){
-            //TODO currency converting here
+            updateCurrencies(list, currency);
+        }else{
+            for(Product product : list){
+                product.setPriceInCurrency(product.getPriceInEuro());
+            }
         }
+
+        //sorting the list
         if(sort != null){
             list = sortList(sort,list);
         }
+
+
 
         return list;
     }
@@ -154,12 +164,23 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
     @Override
     public List<Product> getProducts(String currency){
         List<Product> products = this.productDao.getProducts();
+        updateCurrencies(products, currency);
+        return products;
+    }
+
+    /**
+     * Pour le serivce n°5. Modifie le prix des produits selon la devise.
+     * @param products La liste des produits.
+     * @param currency La devise dans laquelle le prix doit être affiché.
+     */
+    @Override
+    public void updateCurrencies(List<Product> products, String currency){
         for (Product product : products) {
             if(product.getPriceInEuro() != null && product.getPriceInEuro() != 0){
                 double price = exchangeRateDAO.getConvertion(currency, product.getPriceInEuro()).getResult();
                 product.setPriceInCurrency(price);
             }
         }
-        return products;
     }
+
 }
