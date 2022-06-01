@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,14 +18,50 @@ public class EStoreRest {
 
     @EJB
     private StoreBusinessLocal business;
-
+    /**
+     * Query 1 : display all products, can be sorted by ascending or descending price
+     */
     @Path("/products")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<Product> getProducts() {
-        return business.getProducts();
+    public List<Product> getProducts(@QueryParam("sort") String sort) {
+        List<Product> list = new ArrayList<>();
+        if(sort.equalsIgnoreCase("asc")){
+            list = business.getSortedProducts(true);
+        }
+        else if(sort.equalsIgnoreCase("desc")){
+            list = business.getSortedProducts(false);
+        }
+        //base case
+        else{
+            list = business.getProducts();
+        }
+        return list;
     }
 
+    /**
+     * Query 2 : display a product based on its Id
+     * @param Id the Id of the product we want
+     */
+    @Path("/products/{productId}")
+    @GET
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    public Product getProduct(@PathParam("productId") Long Id){
+        return business.getProduct(Id);
+    }
+
+    /**
+     * Query 3 : display a selection of products based on their category
+     * @param category the name of the searched category
+     */
+    @Path("/products/category={searched}")
+    @GET
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    public List<Product> getProductsOfCategory(@PathParam("searched") String category){
+        return business.getProductsOfCategory(category);
+    }
 
     /**
      * Query 6 : Delete a product and all its comments
