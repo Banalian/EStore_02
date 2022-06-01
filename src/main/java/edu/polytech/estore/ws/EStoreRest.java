@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,21 +20,34 @@ public class EStoreRest {
     private StoreBusinessLocal business;
 
     /**
-     * Query 1 and 5 : get all products (5 : with the user's requested currency)
-     * @param currency the currency to convert to
+     * Query 1-3-4-5 : display all products, can be sorted by ascending or descending price, filtered by a category and/or have the price in a different currency
      * @return the list of products
      */
-    @Path("/products")
+    @Path("/products/")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<Product> getProducts(@QueryParam("currency") String currency) {
-        List<Product> products;
-        if(currency != null) {
-            products = business.getProducts(currency);
-        } else {
-            products = business.getProducts();
+    public List<Product> getProducts(@QueryParam("sort") String sort, @QueryParam("currency") String currency , @QueryParam("category") String category) {
+
+        Boolean bSort = true;
+        if(sort == null){
+            bSort = null;
         }
-        return products;
+        else if(sort.equals("desc")){
+            bSort = false;
+        }
+
+        return business.getProducts(category,currency,bSort);
+    }
+
+    /**
+     * Query 2 : display a product based on its Id
+     * @param Id the Id of the product we want
+     */
+    @Path("/products/{productId}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    public Product getProduct(@PathParam("productId") Long Id){
+        return business.getProduct(Id);
     }
 
     /**

@@ -11,75 +11,77 @@ import edu.polytech.estore.model.Product;
 public interface StoreBusinessLocal {
 
     /**
-     * Pour le service n°1.
+     * Pour le service nï¿½1.
      */
     public List<Product> getProducts();
 
     /**
-     * Pour le service n°2.
+     * Pour le service nï¿½2.
      * 
      * @param productId L'identifiant du produit.
      */
     public Product getProduct(Long productId);
 
     /**
-     * Pour le service n°3.
+     * Pour le service nï¿½3.
      * 
-     * @param category La catégorie sur laquelle filtrer.
+     * @param category La catï¿½gorie sur laquelle filtrer.
      */
     public List<Product> getProductsOfCategory(String category);
 
     /**
-     * Pour le service n°4.
+     * Pour le service nï¿½4.
      * 
      * @param asc Si <code>true</code>, le tri est ascendant sur le prix, si
      *            <code>false</code>, le tri est descendant.
      */
     public List<Product> getSortedProducts(Boolean asc);
 
+    public List<Product> getProducts(String category , String currency , Boolean sort);
+
     /**
-     * Pour le service n°4.
+     * Pour le service nï¿½4.
      * 
-     * @param category La catégorie sur laquelle filtrer.
+     * @param category La catï¿½gorie sur laquelle filtrer.
      * @param asc      Si <code>true</code>, le tri est ascendant sur le prix, si
      *                 <code>false</code>, le tri est descendant.
      */
     public List<Product> getSortedProductsOfCategory(String category, Boolean asc);
 
     /**
-     * Pour le service n°6.
+     * Pour le service nï¿½6.
      * 
-     * @param productId L'identiant du produit à supprimer.
+     * @param productId L'identiant du produit ï¿½ supprimer.
      */
     public void deleteProduct(Long productId);
 
     /**
-     * Pour le serivce n°7.
+     * Pour le serivce nï¿½7.
      * 
-     * @param product Le produit à créer.
+     * @param product Le produit ï¿½ crï¿½er.
      */
     public void createProduct(Product product);
 
     /**
-     * Pour le serivce n°8.
+     * Pour le serivce nï¿½8.
      * 
-     * @param product Le produit à modifier (modification totale).
+     * @param product Le produit ï¿½ modifier (modification totale).
      */
     public void updateProduct(Product product);
 
     /**
-     * Pour le serivce n°9.
+     * Pour le serivce nï¿½9.
      * 
-     * @param productId L'identifiant du produit à modifier (modification
+     * @param productId L'identifiant du produit ï¿½ modifier (modification
      *                  partielle).
-     * @param patch     Les modifications à apporter.
+     * @param patch     Les modifications ï¿½ apporter.
      */
     public void patchProduct(Long productId, Product patch);
 
     /**
-     * Pour le serivce n°10.
+     * Pour le serivce nï¿½10.
      * 
-     * @param productId L'identifiant du produit dont on souhaite récupérer les
+     * @param productId L'identifiant du produit dont on souhaite rï¿½cupï¿½rer les
      *                  commentaires.
      */
     public List<Comment> getProductComments(Long productId);

@@ -1,11 +1,13 @@
 package edu.polytech.estore.business;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import com.sun.tools.javac.comp.Todo;
 import edu.polytech.estore.dao.CommentDao;
 import edu.polytech.estore.dao.ExchangeRateDAO;
 import edu.polytech.estore.dao.ProductDao;
@@ -64,6 +66,34 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
                     : p1.getPriceInEuro() == p2.getPriceInEuro() ? 0 : -1);
         }
         return products;
+    }
+
+    /**
+     * @param category the category the user wants to filter by, can be null to not filter
+     * @param currency the currency the user wants the prices to convert to, can be null to not convert
+     * @param sort the order of sorting chosen by user, can be null to not order
+     * @return The list of products, ordered, converted and sorted if necessary
+     */
+    @Override
+    public List<Product> getProducts(String category , String currency , Boolean sort){
+
+        List<Product> list = new ArrayList<>();
+
+        //query is categorized
+        if(category != null){
+            list = getProductsOfCategory(category);
+        }
+        else{
+            list = getProducts();
+        }
+        if(currency != null){
+            //TODO currency converting here
+        }
+        if(sort != null){
+            list = sortList(sort,list);
+        }
+
+        return list;
     }
 
     @Override
