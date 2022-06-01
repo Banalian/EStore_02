@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import com.sun.tools.javac.comp.Todo;
 import edu.polytech.estore.dao.CommentDao;
+import edu.polytech.estore.dao.ExchangeRateDAO;
 import edu.polytech.estore.dao.ProductDao;
 import edu.polytech.estore.model.Comment;
 import edu.polytech.estore.model.Product;
@@ -22,11 +23,15 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
     @Inject
     private CommentDao commentDao;
 
+    @Inject
+    ExchangeRateDAO exchangeRateDAO;
+
     @Override
     public List<Product> getProducts() {
         List<Product> products = this.productDao.getProducts();
         for (Product product : products) {
             product.setComments(this.commentDao.getComments(product.getProductId()));
+            product.setPriceInCurrency(product.getPriceInEuro());
         }
         return products;
     }
@@ -36,6 +41,7 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
         Product product = this.productDao.getProduct(productId);
         if (null != product) {
             product.setComments(this.commentDao.getComments(productId));
+            product.setPriceInCurrency(product.getPriceInEuro());
         }
         return product;
     }
@@ -138,5 +144,22 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
     @Override
     public List<Comment> getProductComments(Long productId) {
         return this.commentDao.getComments(productId);
+    }
+
+    /**
+     * Pour le serivce n°5.
+     *
+     * @param currency La devise dans laquelle le prix doit être affiché.
+     */
+    @Override
+    public List<Product> getProducts(String currency){
+        List<Product> products = this.productDao.getProducts();
+        for (Product product : products) {
+            if(product.getPriceInEuro() != null && product.getPriceInEuro() != 0){
+                double price = exchangeRateDAO.getConvertion(currency, product.getPriceInEuro()).getResult();
+                product.setPriceInCurrency(price);
+            }
+        }
+        return products;
     }
 }

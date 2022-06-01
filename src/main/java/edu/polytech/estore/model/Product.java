@@ -26,6 +26,9 @@ public class Product implements Serializable {
     private String label;
     private String category;
     private Double priceInEuro;
+
+    @Transient
+    private Double priceInCurrency;
     private Integer stock;
     @Transient
     private List<Comment> comments = null;
@@ -33,10 +36,11 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(String label, String category, Double priceInEuro, Integer stock) {
+    public Product(String label, String category, Double priceInEuro, Double priceInCurrency, Integer stock) {
         this.label = label;
         this.category = category;
         this.priceInEuro = priceInEuro;
+        this.priceInCurrency = priceInCurrency;
         this.stock = stock;
     }
 
@@ -70,6 +74,14 @@ public class Product implements Serializable {
 
     public void setPriceInEuro(Double priceInEuro) {
         this.priceInEuro = priceInEuro;
+    }
+
+    public Double getPriceInCurrency() {
+        return priceInCurrency;
+    }
+
+    public void setPriceInCurrency(Double priceInCurrency) {
+        this.priceInCurrency = priceInCurrency;
     }
 
     public Integer getStock() {

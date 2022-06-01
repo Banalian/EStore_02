@@ -18,8 +18,10 @@ public class EStoreRest {
 
     @EJB
     private StoreBusinessLocal business;
+
     /**
-     * Query 1 : display all products, can be sorted by ascending or descending price
+     * Query 1-3-4-5 : display all products, can be sorted by ascending or descending price, filtered by a category and/or have the price in a different currency
+     * @return the list of products
      */
     @Path("/products/")
     @GET
