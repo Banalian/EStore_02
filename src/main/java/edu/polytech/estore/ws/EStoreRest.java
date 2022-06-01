@@ -21,22 +21,20 @@ public class EStoreRest {
     /**
      * Query 1 : display all products, can be sorted by ascending or descending price
      */
-    @Path("/products")
+    @Path("/products/")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<Product> getProducts(@QueryParam("sort") String sort) {
-        List<Product> list = new ArrayList<>();
-        if(sort.equalsIgnoreCase("asc")){
-            list = business.getSortedProducts(true);
+    public List<Product> getProducts(@QueryParam("sort") String sort, @QueryParam("currency") String currency , @QueryParam("category") String category) {
+
+        Boolean bSort = true;
+        if(sort == null){
+            bSort = null;
         }
-        else if(sort.equalsIgnoreCase("desc")){
-            list = business.getSortedProducts(false);
+        else if(sort.equals("desc")){
+            bSort = false;
         }
-        //base case
-        else{
-            list = business.getProducts();
-        }
-        return list;
+
+        return business.getProducts(category,currency,bSort);
     }
 
     /**
@@ -45,22 +43,9 @@ public class EStoreRest {
      */
     @Path("/products/{productId}")
     @GET
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public Product getProduct(@PathParam("productId") Long Id){
         return business.getProduct(Id);
-    }
-
-    /**
-     * Query 3 : display a selection of products based on their category
-     * @param category the name of the searched category
-     */
-    @Path("/products/category={searched}")
-    @GET
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public List<Product> getProductsOfCategory(@PathParam("searched") String category){
-        return business.getProductsOfCategory(category);
     }
 
     /**
