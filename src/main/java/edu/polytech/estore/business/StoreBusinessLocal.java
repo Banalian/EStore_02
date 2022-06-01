@@ -92,4 +92,11 @@ public interface StoreBusinessLocal {
      * @param currency La devise dans laquelle le prix doit être affiché.
      */
     public List<Product> getProducts(String currency);
+
+    /**
+     * Pour le serivce n°5. Modifie le prix des produits selon la devise.
+     * @param products La liste des produits.
+     * @param currency La devise dans laquelle le prix doit être affiché.
+     */
+    public void updateCurrencies(List<Product> products, String currency);
 }

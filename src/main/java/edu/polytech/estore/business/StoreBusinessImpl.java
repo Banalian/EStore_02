@@ -7,7 +7,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import com.sun.tools.javac.comp.Todo;
 import edu.polytech.estore.dao.CommentDao;
 import edu.polytech.estore.dao.ExchangeRateDAO;
 import edu.polytech.estore.dao.ProductDao;
@@ -87,7 +86,7 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
             list = getProducts();
         }
         if(currency != null){
-            //TODO currency converting here
+            updateCurrencies(list, currency);
         }
         if(sort != null){
             list = sortList(sort,list);
@@ -154,12 +153,23 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
     @Override
     public List<Product> getProducts(String currency){
         List<Product> products = this.productDao.getProducts();
+        updateCurrencies(products, currency);
+        return products;
+    }
+
+    /**
+     * Pour le serivce n°5. Modifie le prix des produits selon la devise.
+     * @param products La liste des produits.
+     * @param currency La devise dans laquelle le prix doit être affiché.
+     */
+    @Override
+    public void updateCurrencies(List<Product> products, String currency){
         for (Product product : products) {
             if(product.getPriceInEuro() != null && product.getPriceInEuro() != 0){
                 double price = exchangeRateDAO.getConvertion(currency, product.getPriceInEuro()).getResult();
                 product.setPriceInCurrency(price);
             }
         }
-        return products;
     }
+
 }
