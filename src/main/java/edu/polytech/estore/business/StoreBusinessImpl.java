@@ -68,6 +68,7 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
     }
 
     /**
+     * Get the list of products, with different sorting/filtering options.
      * @param category the category the user wants to filter by, can be null to not filter
      * @param currency the currency the user wants the prices to convert to, can be null to not convert
      * @param sort the order of sorting chosen by user, can be null to not order
@@ -85,12 +86,22 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
         else{
             list = getProducts();
         }
+
+        //currency conversion
         if(currency != null){
             updateCurrencies(list, currency);
+        }else{
+            for(Product product : list){
+                product.setPriceInCurrency(product.getPriceInEuro());
+            }
         }
+
+        //sorting the list
         if(sort != null){
             list = sortList(sort,list);
         }
+
+
 
         return list;
     }
