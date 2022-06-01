@@ -83,4 +83,11 @@ public interface StoreBusinessLocal {
      *                  commentaires.
      */
     public List<Comment> getProductComments(Long productId);
+
+    /**
+     * Pour le serivce n°5.
+     *
+     * @param currency La devise dans laquelle le prix doit être affiché.
+     */
+    public List<Product> getProducts(String currency);
 }

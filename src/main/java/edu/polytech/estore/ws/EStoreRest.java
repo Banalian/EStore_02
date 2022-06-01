@@ -18,13 +18,23 @@ public class EStoreRest {
     @EJB
     private StoreBusinessLocal business;
 
+    /**
+     * Query 1 and 5 : get all products (5 : with the user's requested currency)
+     * @param currency the currency to convert to
+     * @return the list of products
+     */
     @Path("/products")
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<Product> getProducts() {
-        return business.getProducts();
+    public List<Product> getProducts(@QueryParam("currency") String currency) {
+        List<Product> products;
+        if(currency != null) {
+            products = business.getProducts(currency);
+        } else {
+            products = business.getProducts();
+        }
+        return products;
     }
-
 
     /**
      * Query 6 : Delete a product and all its comments
