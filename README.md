@@ -12,8 +12,8 @@ There is also a .sql file to generate some dummy data once you have create the s
 For the first launch, you need to modify the `persistence.xml` file to put the action to `drop-and-create` instead of `none`. Once you've launched it once, you can put it back to `none`
 
 #### Examples
-typical returned objects in JSON and xml
-    ```json
+typical returned objects in JSON form:
+
     {
         "productId": 2,
         "label": "Lave Vaisselle",
@@ -22,8 +22,9 @@ typical returned objects in JSON and xml
         "stock": 8,
         "comments": []
     }
-    ```
-    ```xml
+    
+and xml form:
+
     <product>
         <category>Electroménager</category>
         <label>Lave Vaisselle</label>
@@ -31,7 +32,6 @@ typical returned objects in JSON and xml
         <productId>2</productId>
         <stock>8</stock>
     </product>
-    ```
 
 # Endpoints
 
