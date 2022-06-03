@@ -103,4 +103,12 @@ public interface StoreBusinessLocal {
      * @param currency La devise dans laquelle le prix doit être affiché.
      */
     public void updateCurrencies(List<Product> products, String currency);
+
+    /**
+     * Retourne le taux de conversion d'une devise vers l'autre.
+     * @param from La devise d'origine.
+     * @param to  La devise d'arrivée.
+     * @return Le taux de conversion.
+     */
+    public double getCurrencyRate(String from, String to);
 }

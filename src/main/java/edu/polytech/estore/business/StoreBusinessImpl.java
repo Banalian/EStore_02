@@ -206,9 +206,24 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
      */
     @Override
     public void updateCurrencies(List<Product> products, String currency){
-        for (Product product : products) {
-            updateCurrency(product,currency);
+
+        if(products == null || products.isEmpty()){
+            return;
         }
+
+        double rate = getCurrencyRate("EUR", currency);
+        for(Product product : products){
+            if(product.getPriceInEuro() != null && product.getPriceInEuro() != 0){
+                double price = product.getPriceInEuro() * rate;
+                product.setPriceInCurrency(price);
+            }
+        }
+    }
+
+
+    @Override
+    public double getCurrencyRate(String from, String to){
+        return exchangeRateDAO.getConvertionRate(from, to);
     }
 
 }

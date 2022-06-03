@@ -29,5 +29,20 @@ public class ExchangeRateDaoImpl implements ExchangeRateDAO {
                 .get(WsExchangeRateResult.class);
     }
 
+
+    @Override
+    public double getConvertionRate(String from, String to){
+        Client client = ClientBuilder.newClient();
+
+        return client.target(URI)
+                .path("convert")
+                .queryParam("from", from)
+                .queryParam("to", to)
+                .queryParam("amount", 1)
+                .request(MediaType.APPLICATION_JSON)
+                .header("apikey", API_KEY)
+                .get(WsExchangeRateResult.class).getInfo().getRate();
+    }
+
 }
 
