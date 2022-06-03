@@ -12,7 +12,8 @@ There is also a .sql file to generate some dummy data once you have create the s
 For the first launch, you need to modify the `persistence.xml` file to put the action to `drop-and-create` instead of `none`. Once you've launched it once, you can put it back to `none`
 
 #### Examples
-`typical returned objects in JSON and xml`
+typical returned objects in JSON and xml
+    ```
     {
         "productId": 2,
         "label": "Lave Vaisselle",
@@ -21,6 +22,7 @@ For the first launch, you need to modify the `persistence.xml` file to put the a
         "stock": 8,
         "comments": []
     }
+    ```
     
     <product>
         <category>Electroménager</category>
