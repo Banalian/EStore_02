@@ -54,7 +54,7 @@ get the information of all the products stored in the database
 - `sort` : sort the result in ascending or descending order ("asc" or "desc");
 
 #### Request example
-- `products?currency=USD?sort=asc?category=Alimentation`
+- `/products?currency=USD?sort=asc?category=Alimentation`
 This specific query with the GET verb requests all products of the "Alimentation" category, with prices converted to USD, and sorts the resulting list by ascending price.
 
 ## 2. GET ``/products/<id>``
@@ -98,7 +98,7 @@ completely modify the product with a given `id`
 - application/json
 
 #### Request example
-- `products/28`
+- `/products/28`
 This specific query with the PUT verb with an included product in "typical" format (as shown in the beginning examples) requests the modification of the product of id 28 to match the product object that was sent.
 
 
@@ -121,5 +121,5 @@ get all the comments of a product with a given `id`
 - application/json
 
 #### Request example
-- `products/3/comments`
+- `/products/3/comments`
 This specific query with the GET verb requests all the comments about the product of Id 3, in a arbitrarily sorted list.
