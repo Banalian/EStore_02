@@ -32,6 +32,13 @@ and xml form:
         <productId>2</productId>
         <stock>8</stock>
     </product>
+    
+#### Comments
+About the price conversion while getting multiple products, we decided, rather than converting prices one by one for each product by requesting the api, we get the conversion rate a single time and use it to update all products in the list.
+This approach saves us some requests, mainly to stay under the request limit, it also optimises delay during the operation a bit.
+
+The original project was an eclipse project, which we extracted to be able to create a maven project for easy dependency managing.
+We tried to keep as much of the original structure as possible (segmenting business, DAO, models and webservices), only making minor adjustments to the DAO and business to add needed features like the currency part.
 
 # Endpoints
 
