@@ -13,7 +13,7 @@ For the first launch, you need to modify the `persistence.xml` file to put the a
 
 #### Examples
 typical returned objects in JSON and xml
-    ```
+    ```json
     {
         "productId": 2,
         "label": "Lave Vaisselle",
@@ -23,7 +23,7 @@ typical returned objects in JSON and xml
         "comments": []
     }
     ```
-    
+    ```xml
     <product>
         <category>Electroménager</category>
         <label>Lave Vaisselle</label>
@@ -31,6 +31,7 @@ typical returned objects in JSON and xml
         <productId>2</productId>
         <stock>8</stock>
     </product>
+    ```
 
 # Endpoints
 
