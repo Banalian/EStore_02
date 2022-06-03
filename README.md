@@ -33,7 +33,7 @@ and xml form:
         <stock>8</stock>
     </product>
     
-#### Comments
+# Comments
 About the price conversion while getting multiple products, we decided, rather than converting prices one by one for each product by requesting the api, we get the conversion rate a single time and use it to update all products in the list.
 This approach saves us some requests, mainly to stay under the request limit, it also optimises delay during the operation a bit.
 
