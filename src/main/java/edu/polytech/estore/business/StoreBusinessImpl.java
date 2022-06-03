@@ -1,5 +1,6 @@
 package edu.polytech.estore.business;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import edu.polytech.estore.dao.CommentDao;
+import edu.polytech.estore.dao.ExchangeRateDAO;
 import edu.polytech.estore.dao.ProductDao;
 import edu.polytech.estore.model.Comment;
 import edu.polytech.estore.model.Product;
@@ -20,11 +22,15 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
     @Inject
     private CommentDao commentDao;
 
+    @Inject
+    ExchangeRateDAO exchangeRateDAO;
+
     @Override
     public List<Product> getProducts() {
         List<Product> products = this.productDao.getProducts();
         for (Product product : products) {
             product.setComments(this.commentDao.getComments(product.getProductId()));
+            product.setPriceInCurrency(product.getPriceInEuro());
         }
         return products;
     }
@@ -34,6 +40,7 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
         Product product = this.productDao.getProduct(productId);
         if (null != product) {
             product.setComments(this.commentDao.getComments(productId));
+            product.setPriceInCurrency(product.getPriceInEuro());
         }
         return product;
     }
@@ -58,6 +65,45 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
                     : p1.getPriceInEuro() == p2.getPriceInEuro() ? 0 : -1);
         }
         return products;
+    }
+
+    /**
+     * Get the list of products, with different sorting/filtering options.
+     * @param category the category the user wants to filter by, can be null to not filter
+     * @param currency the currency the user wants the prices to convert to, can be null to not convert
+     * @param sort the order of sorting chosen by user, can be null to not order
+     * @return The list of products, ordered, converted and sorted if necessary
+     */
+    @Override
+    public List<Product> getProducts(String category , String currency , Boolean sort){
+
+        List<Product> list = new ArrayList<>();
+
+        //query is categorized
+        if(category != null){
+            list = getProductsOfCategory(category);
+        }
+        else{
+            list = getProducts();
+        }
+
+        //currency conversion
+        if(currency != null){
+            updateCurrencies(list, currency);
+        }else{
+            for(Product product : list){
+                product.setPriceInCurrency(product.getPriceInEuro());
+            }
+        }
+
+        //sorting the list
+        if(sort != null){
+            list = sortList(sort,list);
+        }
+
+
+
+        return list;
     }
 
     @Override
@@ -109,4 +155,32 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
     public List<Comment> getProductComments(Long productId) {
         return this.commentDao.getComments(productId);
     }
+
+    /**
+     * Pour le serivce n°5.
+     *
+     * @param currency La devise dans laquelle le prix doit être affiché.
+     */
+    @Override
+    public List<Product> getProducts(String currency){
+        List<Product> products = this.productDao.getProducts();
+        updateCurrencies(products, currency);
+        return products;
+    }
+
+    /**
+     * Pour le serivce n°5. Modifie le prix des produits selon la devise.
+     * @param products La liste des produits.
+     * @param currency La devise dans laquelle le prix doit être affiché.
+     */
+    @Override
+    public void updateCurrencies(List<Product> products, String currency){
+        for (Product product : products) {
+            if(product.getPriceInEuro() != null && product.getPriceInEuro() != 0){
+                double price = exchangeRateDAO.getConvertion(currency, product.getPriceInEuro()).getResult();
+                product.setPriceInCurrency(price);
+            }
+        }
+    }
+
 }
