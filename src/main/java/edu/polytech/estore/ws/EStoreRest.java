@@ -8,8 +8,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Stateless
@@ -69,7 +67,6 @@ public class EStoreRest {
     @Path("/products")
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public void createProduct(Product product) {
         business.createProduct(product);
     }
@@ -81,7 +78,6 @@ public class EStoreRest {
     @Path("/products")
     @PUT
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public void updateProduct(Product product) {
         business.updateProduct(product);
     }
@@ -94,7 +90,6 @@ public class EStoreRest {
     @Path("/products/{productId}")
     @PATCH
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public void partialUpdateProduct(@PathParam("productId") Long productId, Product product) {
         business.patchProduct(productId, product);
     }
