@@ -59,7 +59,7 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
                 product.setPriceInCurrency(product.getPriceInEuro());
             }
         }
-        
+
         return product;
     }
 
