@@ -47,7 +47,7 @@ get the information of all the products stored in the database
 - `sort` : sort the result in ascending or descending order ("asc" or "desc");
 
 #### Request example
-- /products?currency=USD?sort=asc?category=Alimentation
+- `products?currency=USD?sort=asc?category=Alimentation`
 This specific query with the GET verb requests all products of the "Alimentation" category, with prices converted to USD, and sorts the resulting list by ascending price.
 
 ## 2. GET ``/products/<id>``
@@ -56,11 +56,11 @@ get the information for the product with a given `id`
 #### Produces
 - application/xml
 - application/json
-- #### Optional query parameter
+#### Optional query parameter
 - `currency` : get the result with priceInCurrency in a different currency with its code (example : "USD")
 
 #### Request example
-- /products/15?currency=USD
+- `/products/15?currency=USD`
 This specific query with the GET verb requests the product of Id 15 with its price converted to USD.
 
 ## 3. DELETE ``/products/<id>``
@@ -68,7 +68,7 @@ This specific query with the GET verb requests the product of Id 15 with its pri
 delete a specific product with the given `id`. Will also delete any comments the product might have.
 
 #### Request example
-- /products/18
+- `/products/18`
 This specific query with the DELETE verb requests the deletion of the product of id 18.
 
 ## 4. POST ``/products``
@@ -79,7 +79,7 @@ create an entirely new product
 - application/json
 
 #### Request example
-- /products
+- `/products`
 This specific query with the POST verb with an included product in "typical" format (as shown in the beginning examples) requests the creation of a product with id auto generated.
 
 
@@ -91,7 +91,7 @@ completely modify the product with a given `id`
 - application/json
 
 #### Request example
-- /products/28
+- `products/28`
 This specific query with the PUT verb with an included product in "typical" format (as shown in the beginning examples) requests the modification of the product of id 28 to match the product object that was sent.
 
 
@@ -103,7 +103,7 @@ partially  modify the product with a given `id`
 - application/json
 
 #### Request example
-- /products/28
+- `/products/28`
 This specific query with the PATCH verb with an included product in "typical" format (as shown in the beginning examples) requests the modification of the product of id 28 to match the product object that was sent, the object can be incomplete, in that case the unentered values will remain the same.
 
 ## 7. GET ``/products/<id>/comments``
@@ -114,5 +114,5 @@ get all the comments of a product with a given `id`
 - application/json
 
 #### Request example
-- /products/3/comments
+- `products/3/comments`
 This specific query with the GET verb requests all the comments about the product of Id 3, in a arbitrarily sorted list.
