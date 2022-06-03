@@ -46,6 +46,24 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
     }
 
     @Override
+    public Product getProduct(Long productId, String currency) {
+        Product product = this.productDao.getProduct(productId);
+        if (null != product) {
+            product.setComments(this.commentDao.getComments(productId));
+            product.setPriceInCurrency(product.getPriceInEuro());
+
+            //currency conversion
+            if(currency != null){
+                updateCurrency(product,currency);
+            }else{
+                product.setPriceInCurrency(product.getPriceInEuro());
+            }
+        }
+        
+        return product;
+    }
+
+    @Override
     public List<Product> getProductsOfCategory(String category) {
         return this.productDao.getProductsOfCategory(category);
     }
@@ -79,7 +97,7 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
 
         List<Product> list = new ArrayList<>();
 
-        //query is categorized
+        //checking categorization
         if(category != null){
             list = getProductsOfCategory(category);
         }
@@ -169,17 +187,27 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
     }
 
     /**
-     * Pour le serivce n°5. Modifie le prix des produits selon la devise.
+     * Pour le serivce n°5. Modifie le prix d'un produit selon la devise entrée.
+     * @param product Le produit à convertir.
+     * @param currency La devise dans laquelle le prix doit être affiché.
+     */
+    @Override
+    public void updateCurrency(Product product, String currency){
+        if(product.getPriceInEuro() != null && product.getPriceInEuro() != 0){
+            double price = exchangeRateDAO.getConvertion(currency, product.getPriceInEuro()).getResult();
+            product.setPriceInCurrency(price);
+        }
+    }
+
+    /**
+     * Pour le serivce n°5. Modifie le prix de plusieurs produits selon la devise.
      * @param products La liste des produits.
      * @param currency La devise dans laquelle le prix doit être affiché.
      */
     @Override
     public void updateCurrencies(List<Product> products, String currency){
         for (Product product : products) {
-            if(product.getPriceInEuro() != null && product.getPriceInEuro() != 0){
-                double price = exchangeRateDAO.getConvertion(currency, product.getPriceInEuro()).getResult();
-                product.setPriceInCurrency(price);
-            }
+            updateCurrency(product,currency);
         }
     }
 

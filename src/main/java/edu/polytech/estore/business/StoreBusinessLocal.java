@@ -22,6 +22,8 @@ public interface StoreBusinessLocal {
      */
     public Product getProduct(Long productId);
 
+    Product getProduct(Long productId, String currency);
+
     /**
      * Pour le service nï¿½3.
      * 
@@ -92,6 +94,8 @@ public interface StoreBusinessLocal {
      * @param currency La devise dans laquelle le prix doit être affiché.
      */
     public List<Product> getProducts(String currency);
+
+    void updateCurrency(Product product, String currency);
 
     /**
      * Pour le serivce n°5. Modifie le prix des produits selon la devise.

@@ -28,6 +28,7 @@ public class EStoreRest {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Product> getProducts(@QueryParam("sort") String sort, @QueryParam("currency") String currency , @QueryParam("category") String category) {
 
+        //converting asc and desc to true and false since business accepts booleans
         Boolean bSort = true;
         if(sort == null){
             bSort = null;
@@ -46,8 +47,8 @@ public class EStoreRest {
     @Path("/products/{productId}")
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public Product getProduct(@PathParam("productId") Long Id){
-        return business.getProduct(Id);
+    public Product getProduct(@PathParam("productId") Long Id, @QueryParam("currency") String currency){
+        return business.getProduct(Id,currency);
     }
 
     /**
